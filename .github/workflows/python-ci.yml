@@ -5,24 +5,10 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
-  workflow_dispatch:
-    inputs:
-      script:
-        description: 'Choose a Python script to run manually'
-        required: false
-        default: 'all'
-        type: choice
-        options:
-          - all
-          - array_operations.py
-          - employee_analytics.py
-          - numpyLesson.py
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    env:
-      SELECTED_SCRIPT: ${{ github.event.inputs.script }}
 
     steps:
       - name: Check out repository
@@ -45,13 +31,3 @@ jobs:
       - name: Run tests
         run: |
           pytest -q
-
-      - name: Run selected Python script
-        run: |
-          if [ "$SELECTED_SCRIPT" = "" ] || [ "$SELECTED_SCRIPT" = "all" ]; then
-            python array_operations.py
-            python employee_analytics.py
-            python numpyLesson.py
-          else
-            python "$SELECTED_SCRIPT"
-          fi
